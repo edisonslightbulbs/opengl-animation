@@ -42,12 +42,9 @@ const GLchar* ForShader::readShader(const char* filename)
 }
 
 GLuint ForShader::makeProgram(const char* vertex, const char* fragment)
-{
-	
+{	
 	const char* vertexShaderCode = readShader(vertex); 
 	const char* fragmentShaderCode = readShader(fragment); 
-	std::cout << vertexShaderCode << std::endl;
-	std::cout << fragmentShaderCode << std::endl;
 
 	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);

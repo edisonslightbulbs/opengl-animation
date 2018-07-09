@@ -18,19 +18,20 @@ Loader::Loader()
 
 Loader::~Loader()
 {
-	glDeleteProgram(shaders_animated_model);
+	glDeleteProgram(shade_model);
 }
 
 void Loader::init()
 {
-	cout << "Loading animation shaders" << endl;
-	shaders_animated_model = ForShader::makeProgram("resources/shaders/animated_model.vert", "resources/shaders/animated_model.frag");
-	cout << "Animation shaders loaded successfully !" << endl;
+	//shaders used for all collada(.dae) animation models
+	shade_model = ForShader::makeProgram("resources/shaders/animated_model.vert", "resources/shaders/animated_model.frag");
+	
+	//refer to loader.h for list of animation models instances 
+	astroboy.loadModel("resources/collada/eagle/model.dae");
+	//astroboy.loadModel("resources/collada/astroboy/model.dae");
 
-	cout << "Loading animation model!" << endl;
-	model_astroboy.loadModel("resources/collada/astroboy/astroBoy_walk_Max.dae");
-	model_astroboy.initShaders(shaders_animated_model);
-	cout << "Animation model loaded successfully !" << endl;
+	astroboy.initShaders(shade_model);
+	cout << "--------------- animation shaders and animated model/s loaded successfully --------------- "<< endl;
 
 	matr_model_2 = glm::rotate(matr_model_2, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	matr_model_2 = glm::translate(matr_model_2, glm::vec3(5.0f, 0.0f, 0.0f));
@@ -57,34 +58,29 @@ void Loader::update(int32_t width, int32_t height)
 
 void Loader::render()
 {
-	glUseProgram(shaders_animated_model);
+	glUseProgram(shade_model);
 
-	glUniform3f(glGetUniformLocation(shaders_animated_model, "view_pos"), camera.camera_pos.x, camera.camera_pos.y, camera.camera_pos.z);
-	glUniform1f(glGetUniformLocation(shaders_animated_model, "material.shininess"), 32.0f);
-	glUniform1f(glGetUniformLocation(shaders_animated_model, "material.transparency"), 1.0f);
+	glUniform3f(glGetUniformLocation(shade_model, "view_pos"), camera.camera_pos.x, camera.camera_pos.y, camera.camera_pos.z);
+	glUniform1f(glGetUniformLocation(shade_model, "material.shininess"), 32.0f);
+	glUniform1f(glGetUniformLocation(shade_model, "material.transparency"), 1.0f);
+
 	// Point Light 1
-	glUniform3f(glGetUniformLocation(shaders_animated_model, "point_light.position"), camera.camera_pos.x, camera.camera_pos.y, camera.camera_pos.z);
+	glUniform3f(glGetUniformLocation(shade_model, "point_light.position"), camera.camera_pos.x, camera.camera_pos.y, camera.camera_pos.z);
 
-	glUniform3f(glGetUniformLocation(shaders_animated_model, "point_light.ambient"), 0.1f, 0.1f, 0.1f);
-	glUniform3f(glGetUniformLocation(shaders_animated_model, "point_light.diffuse"), 1.0f, 1.0f, 1.0f);
-	glUniform3f(glGetUniformLocation(shaders_animated_model, "point_light.specular"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(shade_model, "point_light.ambient"), 0.1f, 0.1f, 0.1f);
+	glUniform3f(glGetUniformLocation(shade_model, "point_light.diffuse"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(shade_model, "point_light.specular"), 1.0f, 1.0f, 1.0f);
 
-	glUniform1f(glGetUniformLocation(shaders_animated_model, "point_light.constant"), 1.0f);
-	glUniform1f(glGetUniformLocation(shaders_animated_model, "point_light.linear"), 0.007);	
-	glUniform1f(glGetUniformLocation(shaders_animated_model, "point_light.quadratic"), 0.0002);
-
-	MVP = perspective_projection * perspective_view * matr_model_1;
-	glUniformMatrix4fv(glGetUniformLocation(shaders_animated_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniformMatrix4fv(glGetUniformLocation(shaders_animated_model, "M_matrix"), 1, GL_FALSE, glm::value_ptr(matr_model_1));
-	glm::mat4 matr_normals_cube = glm::mat4(glm::transpose(glm::inverse(matr_model_1)));
-	glUniformMatrix4fv(glGetUniformLocation(shaders_animated_model, "normals_matrix"), 1, GL_FALSE, glm::value_ptr(matr_normals_cube));	
+	glUniform1f(glGetUniformLocation(shade_model, "point_light.constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(shade_model, "point_light.linear"), 0.007);	
+	glUniform1f(glGetUniformLocation(shade_model, "point_light.quadratic"), 0.0002);
 
 	MVP = perspective_projection * perspective_view * matr_model_2;
-	glUniformMatrix4fv(glGetUniformLocation(shaders_animated_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniformMatrix4fv(glGetUniformLocation(shaders_animated_model, "M_matrix"), 1, GL_FALSE, glm::value_ptr(matr_model_2));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "M_matrix"), 1, GL_FALSE, glm::value_ptr(matr_model_2));
 	glm::mat4 matr_normals_cube2 = glm::mat4(glm::transpose(glm::inverse(matr_model_2)));
-	glUniformMatrix4fv(glGetUniformLocation(shaders_animated_model, "normals_matrix"), 1, GL_FALSE, glm::value_ptr(matr_normals_cube2));
-	model_astroboy.draw(shaders_animated_model);
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "normals_matrix"), 1, GL_FALSE, glm::value_ptr(matr_normals_cube2));
+	astroboy.draw(shade_model);
 	glUseProgram(0);
 
 	glDepthFunc(GL_ALWAYS);
@@ -98,7 +94,7 @@ GLuint Loader::loadImageToTexture(const char* image_path)
 	ilBindImage(ImageName); 
 
 	if (!ilLoadImage((ILstring)image_path)){
-		cout << "I mage failed to load !" << endl;
+		cout << "------------------------- Image loading failed ------------------------------------------- "<< endl;
 	}
 
 	GLuint textureID;

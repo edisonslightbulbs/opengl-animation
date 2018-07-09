@@ -26,14 +26,18 @@ public:
 	GLboolean mouse_first_in;
 	animation_Camera camera;
 
-	GLuint shaders_animated_model;
-	Model model_man;
-	Model model_astroboy;
+	//animated model shader
+	GLuint shade_model;
+
+	//animation model instances
+	Model eagle;
+	Model astroboy;
 
 	glm::mat4 MVP;
 	glm::mat4 perspective_view;
 	glm::mat4 perspective_projection;
 	glm::mat4 matr_model_1;
+	
 	glm::mat4 matr_model_2;
 
 	void init();
