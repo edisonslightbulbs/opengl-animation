@@ -45,8 +45,8 @@ void Loader::update(int32_t width, int32_t height)
 	delta_time = (current_frame - last_frame);
 	last_frame = current_frame;
 
-	perspective_view = camera.getViewMatrix();
-	perspective_projection = glm::perspective(glm::radians(camera.fov), (float)width / (float)height, 1.0f, 2000.0f); 
+	view_matrix = camera.getViewMatrix();
+	projection_matrix = glm::perspective(glm::radians(camera.fov), (float)width / (float)height, 1.0f, 2000.0f); 
 }
 
 void Loader::render()
@@ -67,7 +67,7 @@ void Loader::render()
 	glUniform1f(glGetUniformLocation(shade_model, "point_light.linear"), 0.007);	
 	glUniform1f(glGetUniformLocation(shade_model, "point_light.quadratic"), 0.0002);
 
-	MVP = perspective_projection * perspective_view * model_matrix;
+	MVP = projection_matrix * view_matrix * model_matrix;
 	glUniformMatrix4fv(glGetUniformLocation(shade_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	glUniformMatrix4fv(glGetUniformLocation(shade_model, "M_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	glm::mat4 matr_normals_cube2 = glm::mat4(glm::transpose(glm::inverse(model_matrix)));

@@ -34,9 +34,9 @@ public:
 	Model astroboy;
 
 	glm::mat4 MVP;
-	glm::mat4 perspective_view;
-	glm::mat4 perspective_projection;
+	glm::mat4 view_matrix;
 	glm::mat4 model_matrix;
+	glm::mat4 projection_matrix;
 	
 	glm::mat4 matr_model_2;
 
