@@ -28,7 +28,7 @@ public:
 	void draw(GLuint shaders_program);
 	void showNodeName(aiNode* node);
 
-	static const uint MAX_BONES = 100;
+	static const uint MAX_BONES = 100000;
 	glm::mat4 aiToGlm(aiMatrix4x4 ai_matr);
 	aiQuaternion nlerp(aiQuaternion a, aiQuaternion b, float blend); // super super n lerp =)
 

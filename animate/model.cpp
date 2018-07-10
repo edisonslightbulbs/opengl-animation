@@ -88,31 +88,21 @@ void Model::loadModel(const string& path)
 
 	// directory = container for model.obj and textures and other files
 	directory = path.substr(0, path.find_last_of('/'));
-
-	cout << "scene->HasAnimations() 1: " << scene->HasAnimations() << endl;
-	cout << "scene->mNumMeshes 1: " << scene->mNumMeshes << endl;
-	cout << "scene->mAnimations[0]->mNumChannels 1: " << scene->mAnimations[0]->mNumChannels << endl;
-	cout << "scene->mAnimations[0]->mDuration 1: " << scene->mAnimations[0]->mDuration << endl;
-	cout << "scene->mAnimations[0]->mTicksPerSecond 1: " << scene->mAnimations[0]->mTicksPerSecond << endl << endl;
-
-	cout << "		name nodes : " << endl;
-	showNodeName(scene->mRootNode);
-	cout << endl;
-
-	cout << "		name bones : " << endl;
-	processNode(scene->mRootNode, scene);
-
-	cout << "		name nodes animation : " << endl;
-	for (uint i = 0; i < scene->mAnimations[0]->mNumChannels; i++)
-	{
-		cout<< scene->mAnimations[0]->mChannels[i]->mNodeName.C_Str() << endl;
-	}
-	cout << endl;
+	cout << " \n------------------------------- Scene Details -------------------------------------------- \n "<< endl;
+	cout << "     Animations: " << scene->HasAnimations() << endl;
+	cout << "         Meshes: " << scene->mNumMeshes << endl;
+	cout << "       Channels: " << scene->mAnimations[0]->mNumChannels << endl;
+	cout << "       Duration: " << scene->mAnimations[0]->mDuration << endl;
+	cout << " TicksPerSecond: " << scene->mAnimations[0]->mTicksPerSecond << endl << endl;
+	cout << " 				  "<< endl;
+	
+	showNodeName(scene->mRootNode); 		// node names
+	processNode(scene->mRootNode, scene);	// nodes in procession 
 }
 
 void Model::showNodeName(aiNode* node)
 {
-	cout << node->mName.data << endl;
+	//cout << node->mName.data << endl;
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
 		showNodeName(node->mChildren[i]);
@@ -124,7 +114,7 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 	animation_Mesh mesh;
 	for (uint i = 0; i < scene->mNumMeshes; i++)
 	{
-		std::cout << "process mesh " << i << " of " << scene->mNumMeshes << std::endl;
+		//std::cout << "process mesh " << i << " of " << scene->mNumMeshes << std::endl;
 		aiMesh* ai_mesh = scene->mMeshes[i];
 		mesh = processMesh(ai_mesh, scene);
 		meshes.push_back(mesh); //accumulate all meshes in one vector
@@ -134,7 +124,10 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 
 animation_Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
-	std::cout << "bones: " << mesh->mNumBones << " vertices: " << mesh->mNumVertices << std::endl;
+	cout << " ------------------------ Animated Model Details ------------------------------------------ \n "<< endl;
+	cout << "   number of bones: "<< mesh->mNumBones << endl;
+	cout << "number of vertices: "<< mesh->mNumVertices << endl;
+	cout << " 				  "<< endl;
 
 	vector<Vertex> vertices;
 	vector<GLuint> indices;

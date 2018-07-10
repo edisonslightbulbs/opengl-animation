@@ -30,13 +30,13 @@ public:
 	GLuint shade_model;
 
 	//animation model instances
-	Model eagle;
+	Model model;
 	Model astroboy;
 
 	glm::mat4 MVP;
 	glm::mat4 perspective_view;
 	glm::mat4 perspective_projection;
-	glm::mat4 matr_model_1;
+	glm::mat4 model_matrix;
 	
 	glm::mat4 matr_model_2;
 
