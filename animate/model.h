@@ -13,7 +13,6 @@
 #include <assimp/postprocess.h>
 #include <glm/gtc/quaternion.hpp>
 
-
 using namespace std;
 
 class Model

@@ -110,8 +110,7 @@ GLuint Loader::loadDDS(const char* image_path, int *w, int *h)
 	/**
 	 *   Loader:: loadDDS
 	 *   compress image and save as .DDS (e.g photoshop / nvidia utility)
-	 *   pass compressed image to this method and the method returns an openGL texture 
-	 *      drawing on screen.
+	 *   pass compressed image to this method. The method returns texture.   
 	 */
 	unsigned char header[124];
 

@@ -31,14 +31,11 @@ public:
 
 	//animation model instances
 	Model model;
-	Model astroboy;
 
 	glm::mat4 MVP;
 	glm::mat4 view_matrix;
 	glm::mat4 model_matrix;
 	glm::mat4 projection_matrix;
-	
-	glm::mat4 matr_model_2;
 
 	void init();
 	void update(int32_t width, int32_t height);

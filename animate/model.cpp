@@ -24,15 +24,10 @@ void Model::initShaders(GLuint shader_program)
 {
 	for (uint i = 0; i < MAX_BONES; i++) // get location all matrices of bones
 	{
-		string name = "bones[" + to_string(i) + "]";// name like in shader
+		string name = "bones[" + to_string(i) + "]"; 
 		m_bone_location[i] = glGetUniformLocation(shader_program, name.c_str());
 	}
-
-	// rotate head AND AXIS(y_z) about x !!!!!  Not be gimbal lock
-	//rotate_head_xz *= glm::quat(cos(glm::radians(-45.0f / 2)), sin(glm::radians(-45.0f / 2)) * glm::vec3(1.0f, 0.0f, 0.0f));
 }
-
-
 
 void Model::draw(GLuint shaders_program)
 {
@@ -46,7 +41,8 @@ void Model::draw(GLuint shaders_program)
 	vector<aiMatrix4x4> transforms;
 	boneTransform(duration / 1000.0f, transforms);
 
-	for (uint i = 0; i < transforms.size(); i++) // move all matrices for actual model position to shader
+	// move all matrices reletive to the shader
+	for (uint i = 0; i < transforms.size(); i++)
 	{
 		glUniformMatrix4fv(m_bone_location[i], 1, GL_TRUE, (const GLfloat*)&transforms[i]);
 	}
@@ -86,8 +82,9 @@ void Model::loadModel(const string& path)
 		ticks_per_second = 25.0f;
 	}
 
-	// directory = container for model.obj and textures and other files
+	// directory for collada.dae and textures 
 	directory = path.substr(0, path.find_last_of('/'));
+
 	cout << " \n------------------------------- Scene Details -------------------------------------------- \n "<< endl;
 	cout << "     Animations: " << scene->HasAnimations() << endl;
 	cout << "         Meshes: " << scene->mNumMeshes << endl;
@@ -161,8 +158,13 @@ animation_Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 			vertex.normal = glm::vec3();
 		}
 
-		// in assimp model can have 8 different texture coordinates
-		// we only care about the first set of texture coordinates
+		/* ASSIMP :: for an animated model, each model can have up to 8 different sets of 
+		 *			  texture coordinates this application is only limited to the first 
+		 *			  set of of texture coordinates.	
+		 *
+		 *            this is a potential bug source
+		 */
+
 		if (mesh->mTextureCoords[0])
 		{
 			glm::vec2 vec;
