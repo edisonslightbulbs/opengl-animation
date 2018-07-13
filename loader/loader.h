@@ -30,13 +30,22 @@ public:
 	GLuint shade_model;
 
 	//animation model instances
-	Model model;
+	Model model_0;
+	Model model_1;
+	Model model_2;
+	Model model_3;
 
 	glm::mat4 MVP;
 	glm::mat4 view_matrix;
-	glm::mat4 model_matrix;
 	glm::mat4 projection_matrix;
 
+	glm::mat4 model_matrix_0;
+	glm::mat4 model_matrix_1;
+	glm::mat4 model_matrix_2;
+	glm::mat4 model_matrix_3;
+
+
+	
 	void init();
 	void update(int32_t width, int32_t height);
 	void render();

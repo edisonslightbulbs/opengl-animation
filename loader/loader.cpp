@@ -25,14 +25,32 @@ void Loader::init()
 {
 	//shaders used for all collada(.dae) animation models
 	shade_model = ForShader::makeProgram("resources/shaders/animated_model.vert", "resources/shaders/animated_model.frag");
-	model.loadModel("resources/collada/eagle/model.dae");
-	model.initShaders(shade_model);
+
+	model_0.loadModel("resources/collada/man/model.dae");
+	model_1.loadModel("resources/collada/eagle/model.dae");
+	model_2.loadModel("resources/collada/astroboy/model.dae");
+	
+	model_0.initShaders(shade_model);
+	model_1.initShaders(shade_model);
+	model_2.initShaders(shade_model);
 	
 	cout << " \n --------------- animation shaders and animated model/s loaded successfully --------------- \n"<< endl;
 
-	model_matrix = glm::rotate(model_matrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	model_matrix = glm::translate(model_matrix, glm::vec3(5.0f, 0.0f, 0.0f));
-	model_matrix = glm::scale(model_matrix, glm::vec3(0.3f, 0.3f, 0.3f));
+	model_matrix_0 = glm::rotate(model_matrix_0, glm::radians(-85.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model_matrix_0 = glm::rotate(model_matrix_0, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model_matrix_0 = glm::translate(model_matrix_0, glm::vec3(-19.0f, 20.0f, 0.0f));
+	model_matrix_0 = glm::scale(model_matrix_0, glm::vec3(1.5f, 1.5f, 1.5f));
+
+	model_matrix_1 = glm::rotate(model_matrix_1, glm::radians(-85.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model_matrix_1 = glm::rotate(model_matrix_1, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model_matrix_1 = glm::translate(model_matrix_1, glm::vec3(3.0f, 20.0f, 0.0f));
+	model_matrix_1 = glm::scale(model_matrix_1, glm::vec3(1.5f, 1.5f, 1.5f));
+
+	model_matrix_2 = glm::rotate(model_matrix_2, glm::radians(-85.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model_matrix_2 = glm::rotate(model_matrix_2, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model_matrix_2 = glm::translate(model_matrix_2, glm::vec3(22.0f, 20.0f, 0.0f));
+	model_matrix_2 = glm::scale(model_matrix_2, glm::vec3(1.5f, 1.5f, 1.5f));
+
 }
 
 void Loader::update(int32_t width, int32_t height)
@@ -67,13 +85,31 @@ void Loader::render()
 	glUniform1f(glGetUniformLocation(shade_model, "point_light.linear"), 0.007);	
 	glUniform1f(glGetUniformLocation(shade_model, "point_light.quadratic"), 0.0002);
 
-	MVP = projection_matrix * view_matrix * model_matrix;
-	glUniformMatrix4fv(glGetUniformLocation(shade_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniformMatrix4fv(glGetUniformLocation(shade_model, "M_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
-	glm::mat4 matr_normals_cube2 = glm::mat4(glm::transpose(glm::inverse(model_matrix)));
-	glUniformMatrix4fv(glGetUniformLocation(shade_model, "normals_matrix"), 1, GL_FALSE, glm::value_ptr(matr_normals_cube2));
 
-	model.draw(shade_model);
+	MVP = projection_matrix * view_matrix * model_matrix_0;
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix_0));
+	glm::mat4 matr_normals_cube_0 = glm::mat4(glm::transpose(glm::inverse(model_matrix_0)));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "normals_matrix"), 1, GL_FALSE, glm::value_ptr(matr_normals_cube_0));
+	model_0.draw(shade_model);
+
+
+	MVP = projection_matrix * view_matrix * model_matrix_1;
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "M_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix_1));
+	glm::mat4 matr_normals_cube_1 = glm::mat4(glm::transpose(glm::inverse(model_matrix_1)));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "normals_matrix"), 1, GL_FALSE, glm::value_ptr(matr_normals_cube_1));
+	model_1.draw(shade_model);
+
+
+	MVP = projection_matrix * view_matrix * model_matrix_2;
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "M_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix_2));
+	glm::mat4 matr_normals_cube_2 = glm::mat4(glm::transpose(glm::inverse(model_matrix_2)));
+	glUniformMatrix4fv(glGetUniformLocation(shade_model, "normals_matrix"), 1, GL_FALSE, glm::value_ptr(matr_normals_cube_2));
+	model_2.draw(shade_model);
+
+
 	glUseProgram(0);
 	glDepthFunc(GL_ALWAYS);
 	glDepthFunc(GL_LESS);

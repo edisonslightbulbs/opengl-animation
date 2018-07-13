@@ -76,7 +76,7 @@ void glut_display()
   	loader.update(window_width_, window_height_);
 
   	glViewport(0, 0, (GLsizei)window_width_, (GLsizei)window_height_);
-  	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
+  	glClearColor(0.0f, 1.0f, 0.0f, 0.0f);
   	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   	loader.render();
