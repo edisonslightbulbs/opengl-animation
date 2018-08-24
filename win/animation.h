@@ -45,7 +45,7 @@ public:
 	glm::mat4 MVP; 					// MVP
 
 
-	void init();
+	void init(const char* model, const char* v_shader, const char* f_shader);
 	void update();
 	void render();
 	//void playSound();

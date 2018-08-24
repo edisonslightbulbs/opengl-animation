@@ -9,11 +9,10 @@ class Scene
 {
 public:
 
-	void init();
+	void init(const char* model, const char* v_shader, const char* f_shader);
 	void render();
 	void handleEvents();
 	void update();
-	void playSound();
 	void clean();
 
 	int screen_width;
@@ -37,6 +36,7 @@ private:
 
 	SDL_Window* window = 0;
 	SDL_GLContext glcontext = 0;
+
 
 	Animation animation;
 

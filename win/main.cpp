@@ -3,7 +3,11 @@
 Scene scene;
 int main(int argc, char* argv[])
 {
-	scene.init();
+	const char* animation_model_path = "collada/sphere/model.dae";
+	const char* vertext_shader_path = "shaders/animated_model.vert";
+	const char* fragment_shader_path = "shaders/animated_model.frag";
+
+	scene.init(animation_model_path, vertext_shader_path, fragment_shader_path);
 	while(scene.show())
 	{
 		scene.update();

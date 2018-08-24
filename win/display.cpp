@@ -24,7 +24,7 @@ Scene::~Scene()
 
 }
 
-void Scene::init()
+void Scene::init(const char* model, const char* v_shader, const char* f_shader)
 {
 	// init SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
@@ -75,7 +75,7 @@ void Scene::init()
 	SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &buffer);
 
 	// init animation
-	animation.init();
+	animation.init(model, v_shader, f_shader);
 }
 
 void Scene::handleEvents()
@@ -90,6 +90,7 @@ void Scene::update()
 
 void Scene::render()
 {
+	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	// update key-frame animation
