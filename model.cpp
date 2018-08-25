@@ -1,10 +1,11 @@
 #include "model.h"
 #include "animation.h"
-#include "controls.h"
+#include "display_input.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 
 Model::Model()
 {
@@ -27,19 +28,19 @@ void Model::initShaders(GLuint shader_program)
 
 void Model::update(){
 	// quaternion rotation
-	if(Controls::Instance()->keyPressed(SDL_SCANCODE_1)){
+	if(Control::Instance()->keyPressed(SDL_SCANCODE_1)){
 		rotate_head_xz *= glm::quat(cos(glm::radians(1.0f / 2)), sin(glm::radians(1.0f / 2)) * glm::vec3(1.0f, 0.0f, 0.0f));
 	}
 
-	if(Controls::Instance()->keyPressed(SDL_SCANCODE_2)){
+	if(Control::Instance()->keyPressed(SDL_SCANCODE_2)){
 		rotate_head_xz *= glm::quat(cos(glm::radians(-1.0f / 2)), sin(glm::radians(-1.0f / 2)) * glm::vec3(1.0f, 0.0f, 0.0f));
 	}
 
-	if(Controls::Instance()->keyPressed(SDL_SCANCODE_3)){
+	if(Control::Instance()->keyPressed(SDL_SCANCODE_3)){
 		rotate_head_xz *= glm::quat(cos(glm::radians(1.0f / 2)), sin(glm::radians(1.0f / 2)) * glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 
-	if(Controls::Instance()->keyPressed(SDL_SCANCODE_4)){
+	if(Control::Instance()->keyPressed(SDL_SCANCODE_4)){
 		rotate_head_xz *= glm::quat(cos(glm::radians(-1.0f / 2)), sin(glm::radians(-1.0f / 2)) * glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 }

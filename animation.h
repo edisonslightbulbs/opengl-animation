@@ -3,12 +3,21 @@
 #include "model.h"
 #include "camera.h"
 
-#include "GL\glew.h"
-
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+
+#ifdef __linux__
+ #include <GL/glew.h>
+#endif
+
+
+#ifdef _WIN32 || _WIN64
+ #include "GL\glew.h"
+#endif
+
 
 class Animation
 {
@@ -24,11 +33,9 @@ public:
 	GLfloat last_x;
 	GLfloat last_y;
 
-	Vector2D mouse_position;
+	MouseOnScreenLocation mouse_position;
 	GLboolean mouse_movement;
-
 	Camera camera;
-
 	GLuint shade_model;
 
 	Model model_0;
@@ -44,13 +51,10 @@ public:
 	glm::mat4 projection_matrix; 	// P.
 	glm::mat4 MVP; 					// MVP
 
-
 	void init(const char* model, const char* v_shader, const char* f_shader);
 	void update();
 	void render();
-	//void playSound();
 
 	static GLuint loadDDS(const char* image_path, int* w = nullptr, int* h = nullptr);
 	static GLuint loadImageToTexture(const char* image_path);
 };
-

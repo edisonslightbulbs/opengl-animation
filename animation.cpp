@@ -1,9 +1,21 @@
-#include "animation.h"
 #include "display.h"
+#include "animation.h"
 #include "shaderLinker.h"
-#include "IL\il.h"
-#include "IL\ilu.h"
-#include "IL\ilut.h"
+
+
+#ifdef __linux__
+ #include <IL/il.h>
+ #include <IL/ilu.h>
+ #include <IL/ilut.h>
+#endif
+
+
+#ifdef _WIN32 || _WIN64
+ #include "IL\il.h"
+ #include "IL\ilu.h"
+ #include "IL\ilut.h"
+#endif
+
 
 Animation::Animation()
 {
@@ -59,9 +71,9 @@ void Animation::update()
 	camera.updateKey(delta_time, speed);
 
 	// handle mouse movement
-	if(Controls::Instance()->getMouseButtonState(LEFT_PRESSED)){
+	if(Control::Instance()->getMouseButtonState(LEFT_PRESSED)){
 		SDL_ShowCursor(SDL_DISABLE);
-		mouse_position = Controls::Instance()->getMousePosition();
+		mouse_position = Control::Instance()->getMousePosition();
 
 		if(mouse_movement){
 			last_x = mouse_position.getX();
@@ -76,7 +88,7 @@ void Animation::update()
 
 		camera.updateMouse(x_offset, y_offset);
 	}
-	if (Controls::Instance()->getMouseButtonState(LEFT_RELEASED))
+	if (Control::Instance()->getMouseButtonState(LEFT_RELEASED))
 	{
 		SDL_ShowCursor(SDL_ENABLE);
 		mouse_movement = true;
@@ -89,19 +101,15 @@ void Animation::update()
 
 void Animation::render()
 {
-
 	glUseProgram(shade_model);
 
 	glUniform3f(glGetUniformLocation(shade_model, "view_pos"), camera.camera_pos.x, camera.camera_pos.y, camera.camera_pos.z);
 	glUniform1f(glGetUniformLocation(shade_model, "material.shininess"), 32.0f);
 	glUniform1f(glGetUniformLocation(shade_model, "material.transparency"), 1.0f);
-
 	glUniform3f(glGetUniformLocation(shade_model, "point_light.position"), camera.camera_pos.x, camera.camera_pos.y, camera.camera_pos.z);
-
 	glUniform3f(glGetUniformLocation(shade_model, "point_light.ambient"), 0.1f, 0.1f, 0.1f);
 	glUniform3f(glGetUniformLocation(shade_model, "point_light.diffuse"), 1.0f, 1.0f, 1.0f);
 	glUniform3f(glGetUniformLocation(shade_model, "point_light.specular"), 1.0f, 1.0f, 1.0f);
-
 	glUniform1f(glGetUniformLocation(shade_model, "point_light.constant"), 1.0f);
 	glUniform1f(glGetUniformLocation(shade_model, "point_light.linear"), 0.007);
 	glUniform1f(glGetUniformLocation(shade_model, "point_light.quadratic"), 0.0002);
@@ -190,7 +198,7 @@ GLuint Animation::loadDDS(const char* image_path, int *w, int *h)
 	unsigned int width = *(unsigned int*)&(header[12]);
 	unsigned int linear_size = *(unsigned int*)&(header[16]);
 	unsigned int mipmap_count = *(unsigned int*)&(header[24]);
-	unsigned int four_cc = *(unsigned int*)&(header[80]);  // formats
+	unsigned int four_cc = *(unsigned int*)&(header[80]);  
 
 	if (w != nullptr) *w = width;
 	if (h != nullptr) *h = height;
@@ -254,6 +262,5 @@ GLuint Animation::loadDDS(const char* image_path, int *w, int *h)
 		height /= 2;
 	}
 	free(buffer);
-
 	return textureID;
 }

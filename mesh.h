@@ -1,18 +1,27 @@
 #pragma once
 
 #include <iostream>
-
-#include "GL\glew.h"
-#include "glm\glm.hpp"
-#include "assimp\Importer.hpp"
-
 #include <vector>
 #include <string>
-
 
 using namespace std;
 typedef unsigned int uint;
 #define NUM_BONES_PER_VEREX 4
+
+
+#ifdef __linux__
+ #include <GL/glew.h>
+ #include <glm/glm.hpp>
+ #include <assimp/Importer.hpp>
+#endif
+
+
+#ifdef _WIN32 || _WIN64
+ #include "GL\glew.h"
+ #include "glm\glm.hpp"
+ #include "assimp\Importer.hpp"
+#endif
+
 
 struct Vertex
 {

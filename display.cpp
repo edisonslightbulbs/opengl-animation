@@ -1,15 +1,25 @@
 #include "display.h"
-#include "controls.h"
-#include "GL\glew.h"
-#include "GL\freeglut.h"
-#include "IL\il.h"
-#include "IL\ilu.h"
-#include "IL\ilut.h"
+#include "display_input.h"
 
 #include <iostream>
-#include <assert.h>
-
 using namespace std;
+
+#ifdef __linux__
+ #include <GL/glew.h>
+ #include <GL/freeglut.h>
+ #include <IL/il.h>
+ #include <IL/ilu.h>
+ #include <IL/ilut.h>
+#endif
+
+#ifdef _WIN32 || _WIN64
+ #include "GL\glew.h"
+ #include "GL\freeglut.h"
+ #include "IL\il.h"
+ #include "IL\ilu.h"
+ #include "IL\ilut.h"
+#endif
+
 
 Scene::Scene()
 {
@@ -27,8 +37,7 @@ Scene::~Scene()
 void Scene::init(const char* model, const char* v_shader, const char* f_shader)
 {
 	// init SDL
-	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
-	{
+	if (SDL_Init(SDL_INIT_EVERYTHING) >= 0){
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
@@ -80,7 +89,7 @@ void Scene::init(const char* model, const char* v_shader, const char* f_shader)
 
 void Scene::handleEvents()
 {
-	Controls::Instance()->updateEvent();
+	Control::Instance()->updateEvent();
 }
 
 void Scene::update()

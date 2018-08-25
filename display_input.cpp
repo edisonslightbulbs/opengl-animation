@@ -1,23 +1,22 @@
-#include "controls.h"
 #include "display.h"
+#include "display_input.h"
 
-Controls::Controls()
+
+Control::Control()
 {
 	m_mouseButtonState.reserve(6);
-	for (int i = 0; i < 6; i++)  // for 3 mouse button by 2 states
-	{
+	for (int i = 0; i < 6; i++){  // for 3 mouse button by 2 states
 		m_mouseButtonState.push_back(false);
 	}
 }
 
-void Controls::updateEvent()
+void Control::updateEvent()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
 		h_keyStates = SDL_GetKeyboardState(0); // vernet massiw s sostojaniem knopok
-		switch (event.type)
-		{
+		switch (event.type){
 		case SDL_QUIT:
 			Scene::Instance()->clean();
 			break;
@@ -37,13 +36,13 @@ void Controls::updateEvent()
 	}
 }
 
-void Controls::onMouseMove(SDL_Event& event)
+void Control::onMouseMove(SDL_Event& event)
 {
 	m_mousePosition.setX(event.motion.x);
 	m_mousePosition.setY(event.motion.y);
 }
 
-void Controls::onMouseButtonDown(SDL_Event& event)
+void Control::onMouseButtonDown(SDL_Event& event)
 {
 	if(event.button.button == SDL_BUTTON_LEFT){
 		m_mouseButtonState[LEFT_PRESSED] = true;
@@ -61,7 +60,7 @@ void Controls::onMouseButtonDown(SDL_Event& event)
 	}
 }
 
-void Controls::onMouseButtonUp(SDL_Event& event)
+void Control::onMouseButtonUp(SDL_Event& event)
 {
 	if(event.button.button == SDL_BUTTON_LEFT){
 		m_mouseButtonState[LEFT_RELEASED] = true;
@@ -79,7 +78,7 @@ void Controls::onMouseButtonUp(SDL_Event& event)
 	}
 }
 
-void Controls::resetMouse()
+void Control::resetMouse()
 {
 	m_mouseButtonState[LEFT_PRESSED] = false;
 	m_mouseButtonState[MIDDLE_PRESSED] = false;
@@ -90,7 +89,7 @@ void Controls::resetMouse()
 	m_mouseButtonState[RIGHT_RELEASED] = false;
 }
 
-bool Controls::keyPressed(SDL_Scancode key)
+bool Control::keyPressed(SDL_Scancode key)
 {
 	if(h_keyStates != 0){
 		if (h_keyStates[key] == 1){
@@ -100,7 +99,7 @@ bool Controls::keyPressed(SDL_Scancode key)
 	return false;
 }
 
-bool Controls::keyReleased(SDL_Scancode key)
+bool Control::keyReleased(SDL_Scancode key)
 {
 	if(h_keyStates != 0){
 		if (h_keyStates[key] == 1){
@@ -110,7 +109,7 @@ bool Controls::keyReleased(SDL_Scancode key)
 	return false;
 }
 
-void Controls::clean()
+void Control::clean()
 {
 
 }

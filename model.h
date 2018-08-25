@@ -5,15 +5,26 @@
 #include <map>
 #include <vector>
 #include <string>
-
-#include "GL\glew.h"
-#include "glm\gtc\quaternion.hpp"
-
-#include "assimp\Importer.hpp"
-#include "assimp\scene.h"
-#include "assimp\postprocess.h"
-
 using namespace std;
+
+
+#ifdef __linux__
+ #include <GL/glew.h>
+ #include <assimp/scene.h>
+ #include <assimp/Importer.hpp>
+ #include <assimp/postprocess.h>
+ #include <glm/gtc/quaternion.hpp>
+#endif
+
+
+#ifdef _WIN32 || _WIN64
+ #include "GL\glew.h"
+ #include "glm\gtc\quaternion.hpp"
+ #include "assimp\Importer.hpp"
+ #include "assimp\scene.h"
+ #include "assimp\postprocess.h"
+#endif
+
 
 class Model
 {
@@ -27,7 +38,6 @@ public:
 	void loadModel(const string& path);
 	void update();
 	void draw(GLuint shaders_program);
-	void playSound();
 	void showNodeName(aiNode* node);
 
 	glm::mat4 aiToGlm(aiMatrix4x4 ai_matr);

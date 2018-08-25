@@ -1,9 +1,17 @@
 #pragma once
 
-#include "GL\glew.h"
-#include "SDL\SDL_opengl.h"
-
 #include <iostream>
+
+
+#ifdef __linux__
+ #include <GL/glew.h>
+#endif
+
+
+#ifdef _WIN32 || _WIN64
+ #include "GL\glew.h"
+#endif
+
 
 class ShaderLinker
 {
@@ -12,7 +20,7 @@ public:
 	~ShaderLinker();
 
 	static const GLchar* readShader(const char* filename);
-
 	static GLuint makeProgram(const char* vertex, const char* fragment);
 };
+
 

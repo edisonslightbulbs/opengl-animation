@@ -1,10 +1,21 @@
 #pragma once
 
-#include "GL\glew.h"
-#include "glm\glm.hpp"
-#include "glm\gtc\matrix_transform.hpp"
-#include "controls.h"
-#include "Vector2D.h"
+#include "display_input.h"
+
+
+#ifdef __linux__
+ #include <GL/glew.h>
+ #include <glm/glm.hpp>
+ #include <glm/gtc/matrix_transform.hpp>
+#endif
+
+
+#ifdef _WIN32 || _WIN64
+ #include "GL\glew.h"
+ #include "glm\glm.hpp"
+ #include "glm\gtc\matrix_transform.hpp"
+#endif
+
 
 // Default camera values
 const GLfloat YAW = -90.0f;
@@ -16,7 +27,6 @@ class Camera
 {
 public:
 	~Camera() {};
-
 
 	glm::vec3 camera_pos;
 	glm::vec3 camera_front;
@@ -47,28 +57,28 @@ public:
 	{
 		GLfloat velocity = speed * delta_time;
 
-		if(Controls::Instance()->keyPressed(SDL_SCANCODE_W)){
+		if(Control::Instance()->keyPressed(SDL_SCANCODE_W)){
 			camera_pos += velocity * camera_front;
 		}
 
-		if(Controls::Instance()->keyPressed(SDL_SCANCODE_S)){
+		if(Control::Instance()->keyPressed(SDL_SCANCODE_S)){
 			camera_pos -= velocity / 2 * camera_front;
 		}
 
-		if(Controls::Instance()->keyPressed(SDL_SCANCODE_A)){
+		if(Control::Instance()->keyPressed(SDL_SCANCODE_A)){
 			camera_pos -= camera_right * velocity;
 		}
 
-		if(Controls::Instance()->keyPressed(SDL_SCANCODE_D)){
+		if(Control::Instance()->keyPressed(SDL_SCANCODE_D)){
 			camera_pos += camera_right * velocity;
 		}
 
-		if(Controls::Instance()->keyPressed(SDL_SCANCODE_SPACE)){
+		if(Control::Instance()->keyPressed(SDL_SCANCODE_SPACE)){
 			camera_pos += glm::vec3(0.0f, 0.01f * delta_time, 0.0f); // for jump
 		}
 
 		// zoom
-		if(Controls::Instance()->keyPressed(SDL_SCANCODE_LSHIFT))
+		if(Control::Instance()->keyPressed(SDL_SCANCODE_LSHIFT))
 		{
 			fov = 10.0f;
 			sensitivity = 0.025f;
