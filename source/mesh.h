@@ -16,7 +16,7 @@ typedef unsigned int uint;
 #endif
 
 
-#ifdef _WIN32 || _WIN64
+#if defined(_WIN32) || defined(_WIN64)
  #include "GL\glew.h"
  #include "glm\glm.hpp"
  #include "assimp\Importer.hpp"

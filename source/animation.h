@@ -14,7 +14,7 @@
 #endif
 
 
-#ifdef _WIN32 || _WIN64
+#if defined(_WIN32) || defined(_WIN64)
  #include "GL\glew.h"
 #endif
 
